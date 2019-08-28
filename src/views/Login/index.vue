@@ -3,31 +3,43 @@
     <el-card class="box-card">
       <img src="../../assets/images/logo_index.png" alt />
       <!-- model="loginForm" 动态绑定model属性  loginForm属性指定当前所有表单元素的数据结合 -->
-        <!-- 登录模块-添加校验    Form 组件提供了表单验证的功能，只需要通过 `rules` 属性传入约定的验证规则，
+      <!-- 登录模块-添加校验    Form 组件提供了表单验证的功能，只需要通过 `rules` 属性传入约定的验证规则，
         并将 Form-Item 的 `prop` 属性设置为需校验的字段名即可
         el-form  属性 rules 指定校验规则
-        -->
-        <!-- status-icon属性为输入框添加了表示校验结果的反馈图标。 -->
-    <el-form :model="loginForm"  status-icon :rules="loginRules" style="margin-top:15px;" ref="loginForm">
-        <el-form-item  prop="mobile">
+      -->
+      <!-- status-icon属性为输入框添加了表示校验结果的反馈图标。 -->
+      <el-form
+        :model="loginForm"
+        status-icon
+        :rules="loginRules"
+        style="margin-top:15px;"
+        ref="loginForm"
+      >
+        <el-form-item prop="mobile">
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item prop="code">
-          <el-input v-model="loginForm.code"  placeholder="请输入验证码" style="width:236px;margin-right:10px"></el-input>
+          <el-input
+            v-model="loginForm.code"
+            placeholder="请输入验证码"
+            style="width:236px;margin-right:10px"
+          ></el-input>
           <el-button>发送验证码</el-button>
         </el-form-item>
         <el-form-item>
-            <el-checkbox :value="true"> 我已阅读并同意用户协议和隐私条款</el-checkbox>
+          <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary"  style="width:100%" @click="denglu">登录</el-button>
+          <el-button type="primary" style="width:100%" @click="denglu">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
   </div>
 </template>
-
 <script>
+// 导入 stroe 模块
+import store from '@/store'
+
 export default {
   data () {
     // 自定义效验规则
@@ -41,8 +53,8 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '13666666666',
+        code: '246810'
       },
       // 表单效验对象
       loginRules: {
@@ -64,18 +76,35 @@ export default {
     denglu () {
       // alert('王武清是啥掉')
       // -整体校验 调用 validate 对整体进行校验
-      this.$refs.loginForm.validate((vali) => {
+      this.$refs.loginForm.validate(async vali => {
         if (vali) {
           // console.log(333) 333
           // 校验成功之后调用接口
-          this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
-            .then(res => {
-              // 成功 跳转
-              this.$router.push('App.vue')
-            })
-            .catch(() => {
-              this.$message.error('手机号或验证码错误')
-            })
+          // this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
+          //   .then(res => {
+          //     // res是响应对象--->res.data响应主体---->res.data.data响应主体包含（message,data）
+          //     // 用户信息  res.data.data
+          //     // 操作用户信息 就是操作 Store 存储  写一个模块进行用户信息的操作。
+          //     // console.log(res.data.data)
+          //     Store.setUser(res.data.data)
+          //     // 成功 跳转
+          //     this.$router.push('/')
+          //   })
+          //   .catch(() => {
+          //     this.$message.error('手机号或验证码错误')
+          //   })
+          // 2. 当获取登录成功后的 用户信息数据
+          // res = {data:{data:'用户信息',message:'提示'}获取数据失败 提示错误信息
+          // try{ //可能报错的代码 }catch(exception){ //获取到异常报错（处理异常） }
+          // js怎么捕获异常。、
+          // - 任何可能报错代码，使用 try{}catch(e){} 进行处理。
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
+            store.setUser(data)
+            this.$router.push('/')
+          } catch (err) {
+            this.$message.error('手机号或验证码错误')
+          }
         }
       })
     }
