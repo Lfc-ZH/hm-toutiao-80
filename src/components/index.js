@@ -4,10 +4,12 @@
 //   - 功能：在install去实现，Vue对象基础之上，去扩展功能。
 // 封装插件：components/index.js
 import myBread from '@/components/my-bread'
+import myChannel from '@/components/my-pingdao'
 export default {
   install (Vue) {
     // Vue 对象  main.js 使用 Vue.use(插件) 调用install函数，传入当前的Vue对象
     // Vue.component('名字', '配置对象')
     Vue.component(myBread.name, myBread)
+    Vue.component(myChannel.name, myChannel)
   }
 }

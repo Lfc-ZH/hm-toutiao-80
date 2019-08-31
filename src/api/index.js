@@ -3,6 +3,16 @@
 import axios from 'axios'
 import store from '@/store'
 import router from '../router/router'
+import JSONBIG from 'json-bigint'
+// 自定义转换内容
+axios.defaults.transformResponse = [ (data) => {
+  // 对 data 进行任意转换处理  数字最大安全值
+  try {
+    return JSONBIG.parse(data)
+  } catch (e) {
+    return data
+  }
+}]
 
 // 配置 相同的 基准地址
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'

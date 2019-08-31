@@ -13,6 +13,8 @@ import NotFound from '@/views/404'
 import store from '@/store'
 // 引入 首页内容
 import article from '@/views/article'
+import Image from '@/views/image'
+import Publish from '@/views/publish'
 // 注册 vue -router
 Vue.use(VueRouter)
 // 初始化router、
@@ -29,7 +31,9 @@ const router = new VueRouter({
       children: [
         // 路由规则  子路由有名称  父路由不需要设置name属性
         { path: '/', name: 'welcome', component: welcome },
-        { path: '/article', name: 'article', component: article }
+        { path: '/article', name: 'article', component: article },
+        { path: '/image', name: 'Image', component: Image },
+        { path: '/publish', name: 'Publish', component: Publish }
       ]
     },
     { path: '*', name: '404', component: NotFound }
