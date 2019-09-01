@@ -11,6 +11,8 @@ import welcome from '../views/welcome/index'
 import NotFound from '@/views/404'
 // 引入stroe
 import store from '@/store'
+// 引入 全局样式
+// import Style from '@/style/index'
 // 引入 首页内容
 import article from '@/views/article'
 import Image from '@/views/image'

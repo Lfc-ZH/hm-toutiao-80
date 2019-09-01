@@ -7,6 +7,7 @@ import router from './router/router'
 // 引入全局components下的配置对象
 import myBread from '@/components'
 // 简单配置axios 引入
+import '@/styles/index.less'
 // import Axios from 'axios'
 import Axios from '@/api'
 // 注册

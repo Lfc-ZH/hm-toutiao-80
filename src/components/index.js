@@ -5,11 +5,13 @@
 // 封装插件：components/index.js
 import myBread from '@/components/my-bread'
 import myChannel from '@/components/my-pingdao'
+import myImage from '@/components/my-image'
 export default {
   install (Vue) {
     // Vue 对象  main.js 使用 Vue.use(插件) 调用install函数，传入当前的Vue对象
     // Vue.component('名字', '配置对象')
     Vue.component(myBread.name, myBread)
     Vue.component(myChannel.name, myChannel)
+    Vue.component(myImage.name, myImage)
   }
 }
