@@ -18,6 +18,8 @@ import article from '@/views/article'
 import Image from '@/views/image'
 import Publish from '@/views/publish'
 import comment from '@/views/Comment'
+import Setting from '@/views/setting'
+import Fans from '@/views/fans'
 // 注册 vue -router
 Vue.use(VueRouter)
 // 初始化router、
@@ -37,7 +39,9 @@ const router = new VueRouter({
         { path: '/article', name: 'article', component: article },
         { path: '/image', name: 'Image', component: Image },
         { path: '/publish', name: 'Publish', component: Publish },
-        { path: '/comment', name: 'comment', component: comment }
+        { path: '/comment', name: 'comment', component: comment },
+        { path: '/setting', name: 'setting', component: Setting },
+        { path: '/fans', name: 'Fans', component: Fans }
       ]
     },
     { path: '*', name: '404', component: NotFound }

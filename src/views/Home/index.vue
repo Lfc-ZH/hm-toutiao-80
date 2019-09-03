@@ -85,6 +85,7 @@
 </template>
 <script>
 import store from '@/store'
+import eventBus from '@/eventBus.js'
 export default {
   //   导航菜单  是通过属性 collapse 来控制展开与收起
   // - collapse  对应的数据值  false  展开
@@ -95,6 +96,12 @@ export default {
     const user = store.getUser()
     this.name = user.name
     this.photo = user.photo
+    eventBus.$on('gaimingzi', (name) => {
+      this.name = name
+    })
+    eventBus.$on('updatePhoto', (photo) => {
+      this.photo = photo
+    })
   },
   data () {
     return {
