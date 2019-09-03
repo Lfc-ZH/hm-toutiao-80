@@ -66,7 +66,7 @@
         <el-table-column prop="pubdate" label="发布时间"></el-table-column>
         <el-table-column label="操作" width="120px">
           <template slot-scope="scope">
-            <el-button @click="$router.push(`/publish?id=+scope.row.id`)" type="primary" icon="el-icon-edit" plain circle></el-button>
+            <el-button @click="$router.push('/publish?id='+scope.row.id)" type="primary" icon="el-icon-edit" plain circle></el-button>
             <el-button
               type="danger"
               @click="delArticle(scope.row.id)"

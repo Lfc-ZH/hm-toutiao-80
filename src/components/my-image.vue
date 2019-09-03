@@ -2,7 +2,7 @@
   <div class="img-container">
     <!-- 图片按钮 -->
     <div class="img_btn" @click="openDialog">
-      <img src="../assets/images/default.png" alt />
+      <img :src="value||defaultImage" alt />
     </div>
     <!-- 点击以后出现的对话框 -->
     <el-dialog :visible.sync="dialogVisible" width="750px">
@@ -53,7 +53,7 @@
       </el-tabs>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="confirmImage">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -61,8 +61,12 @@
 
 <script>
 import store from '@/store/index'
+// 处理默认图片不显示问题  引入成资源
+import defaultImage from '../assets/images/default.png'
+
 export default {
   name: 'my-image',
+  props: ['value'],
   data () {
     return {
       // 获取图片素材请求参数
@@ -86,13 +90,33 @@ export default {
         Authorization: `Bearer ${store.getUser().token}`
       },
       // 上传成功后的图片地址
-      uploadImageUrl: null
+      uploadImageUrl: null,
+      // 图片默认的src数据
+      defaultImage
     }
   },
   methods: {
+    // 点击确认后图片
+    confirmImage () {
+      //  - 判断用什么图片，根据当前激活的选项卡的名字的值 activeName。
+      // - 值 image 代表 选中素材，使用 selectedImageUrl
+      // - 值 upload代表 选中上传图片，使用 uploadImageUrl
+      let src = null
+      if (this.activeName === 'image') {
+        if (!this.selectedImageUrl) return this.$message.info('请选择素材图片')
+        src = this.selectedImageUrl
+      } else {
+        if (!this.uploadImageUrl) return this.$message.info('请上传图片')
+        src = this.uploadImageUrl
+      }
+      // 给图片按钮赋值
+      this.$emit('input', src)
+      // 然后关闭对话框
+      this.dialogVisible = false
+    },
     //   上传成功
     handleSuccess (res) {
-    //   console.log(666)
+      //   console.log(666)
       this.$message.success('上传图片成功')
       //   預覽地址设置成上传的地址实现预览
       this.uploadImageUrl = res.data.url
@@ -132,6 +156,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.img-container{
+  display:inline-block;
+  margin-right: 20px;
+}
 .img_list {
   margin-top: 10px;
   .img_item {
@@ -178,27 +206,27 @@ export default {
   display: block;
   width: 100%;
 }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
